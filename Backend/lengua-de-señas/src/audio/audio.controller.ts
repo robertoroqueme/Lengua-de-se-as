@@ -1,3 +1,5 @@
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
     UploadedFile,
     UseInterceptors,
@@ -5,6 +7,7 @@ import {
   import { FileInterceptor } from '@nestjs/platform-express';
   import { diskStorage } from 'multer';
   import { extname } from 'path';
+
   
 import { Controller, Get, Post, Body, Param, Delete, Put, Patch } from '@nestjs/common';
 import { AudioService } from './audio.service';
@@ -25,7 +28,7 @@ export class AudioController {
   create(@Body() createAudioDto: CreateAudioDto) {
     return this.audioService.create(createAudioDto);
   }
-
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.audioService.findAll();
